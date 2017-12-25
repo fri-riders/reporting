@@ -1,0 +1,27 @@
+server:
+  port: 8085
+
+spring:
+  application:
+    name: reporting
+  cloud:
+    consul:
+      enabled: true
+      host: ${CONFIG_SERVER_URL:localhost}
+      discovery:
+        hostname: ${DISCOVERY_HOSTNAME:localhost}
+  profiles:
+    active: ${SPR_PROFILE:dev}
+
+management:
+  security:
+    enabled: false
+  health:
+    solr:
+      enabled: false
+    consul:
+      enabled: false
+
+endpoints:
+  health:
+    sensitive: false
