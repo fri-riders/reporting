@@ -8,6 +8,7 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,14 +33,35 @@ public class ReportingController {
 
     @RequestMapping(value = "/accommodations", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_PDF_VALUE)
-    public ResponseEntity<InputStreamResource> citiesReport() throws IOException {
+    public ResponseEntity<InputStreamResource> accommodationsReport() throws IOException {
 
         List<Accommodation> accommodations = accommodationsClient.getAll();
 
-        ByteArrayInputStream bis = pdfGeneratorService.generateReport("Accommodations list", accommodations);
+        ByteArrayInputStream bis = pdfGeneratorService.generateSimpleReport("Accommodations list", accommodations);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Disposition", "inline; filename=accommodations.pdf");
+
+        return ResponseEntity
+                .ok()
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(new InputStreamResource(bis));
+    }
+
+    @RequestMapping(value = "/accommodationBookings/{id}", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_PDF_VALUE)
+    public ResponseEntity<InputStreamResource> citiesReport(@PathVariable(value = "id") long id) throws IOException {
+
+        List<Accommodation> accommodations = accommodationsClient.getAll();
+
+        ByteArrayInputStream bis = pdfGeneratorService.generateAccommodationBookingsReport(
+                "Accommodation Bookings list",
+                accommodationsClient.getForId(id),
+                accommodationsClient.getForBooking(id));
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "inline; filename=AccommodationBookings.pdf");
 
         return ResponseEntity
                 .ok()

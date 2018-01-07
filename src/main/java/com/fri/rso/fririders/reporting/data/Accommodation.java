@@ -89,12 +89,12 @@ public class Accommodation  implements PdfSerializable{
     @Override
     public Map<String, Function<Accommodation,String>> serializationData() {
         Map<String,Function<Accommodation,String>> data = new LinkedHashMap<>();
-        data.put("id" , a -> a.getId().toString());
-        data.put("name", Accommodation::getName);
-        data.put("location", Accommodation::getLocation);
-        data.put("description", Accommodation::getDescription);
-        data.put("capacity", a -> String.valueOf(a.getCapacity()));
-        data.put("pricePerDay", a -> a.getPricePerDay().toString());
+        data.put("ID" , a -> a.getId().toString());
+        data.put("Name", Accommodation::getName);
+        data.put("Location", Accommodation::getLocation);
+        data.put("Description", Accommodation::getDescription);
+        data.put("Capacity", a -> String.valueOf(a.getCapacity()+ " rooms"));
+        data.put("Price per day", a -> a.getPricePerDay().toString() + " €");
         return data;
     }
 }

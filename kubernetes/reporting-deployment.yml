@@ -10,7 +10,7 @@ spec:
         app: reporting
     spec:
       containers:
-      - image: janerz6/reporting:0.4
+      - image: janerz6/reporting:0.2
         name: reporting
         env:
           - name: CONFIG_SERVER_URL
@@ -22,7 +22,7 @@ spec:
           initialDelaySeconds: 30
           periodSeconds: 3
         ports:
-        - containerPort: 8083
+        - containerPort: 8085
           name: server
           protocol: TCP
         resources:
@@ -41,8 +41,8 @@ spec:
   type: NodePort
   ports:
   - name: server
-    port: 8083
+    port: 8085
     protocol: TCP
-    targetPort: 8083
+    targetPort: 8085
   selector:
     app: reporting
